@@ -1,9 +1,18 @@
-import { NextRequest } from "next/server";
-import { getBenchmarks } from "@/lib/pricing";
+// app/api/benchmarks/route.ts
+import { NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
 
-export async function GET(req: NextRequest) {
-  const code = req.nextUrl.searchParams.get("activityCode") || "";
-  if (!code) return new Response(JSON.stringify({}), { status: 400 });
-  const b = await getBenchmarks(code);
-  return new Response(JSON.stringify(b ?? {}), { headers: { "content-type": "application/json" }});
+export async function GET() {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY! // server-only
+  );
+
+  const { data, error } = await supabase
+    .from('v_activity_benchmarks')
+    .select('code,name,unit,labor_cost_per_unit,equip_cost_per_unit,material_cost_per_unit,direct_cost_per_unit')
+    .order('code');
+
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  return NextResponse.json(data ?? []);
 }
