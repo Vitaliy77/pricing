@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id            Int     @id @default(autoincrement())
+  name          String  @unique
+  baseRate      Float
+  burdenPct     Float
+  otMultiplier  Float
+  loadedRate    Float
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Equipment {
+  id            Int     @id @default(autoincrement())
+  type          String
+  rateUnit      String
+  rate          Float
+  fuelPerHour   Float
+  maintPerHour  Float
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Material {
+  id          Int    @id @default(autoincrement())
+  sku         String @unique
+  description String
+  unit        String
+  unitCost    Float
+  wastePct    Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Activity {
+  id        Int    @id @default(autoincrement())
+  code      String @unique
+  name      String
+  unit      String
+  defaultRolesJson     Json?
+  defaultEquipJson     Json?
+  defaultMaterialsJson Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Config {
+  id                Int    @id @default(1)
+  gnaPct            Float  @default(0.10)
+  fieldOhPerDay     Float  @default(1500)
+  contingencyPct    Float  @default(0.05)
+  salesTaxMatPct    Float  @default(0.08)
+  profitMarginPct   Float  @default(0.12)
+  varianceAlertPct  Float  @default(0.15)
+}
+
+model Estimate {
+  id          Int      @id @default(autoincrement())
+  jobId       String
+  client      String?
+  location    String?
+  estimateClass String?
+  status      String   @default("draft")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  lines       EstimateLine[]
+}
+
+model EstimateLine {
+  id           Int      @id @default(autoincrement())
+  estimateId   Int
+  activityCode String
+  quantity     Float
+  durationDays Float   @default(0)
+  otherCosts   Float   @default(0)
+  rolesJson     Json?
+  equipJson     Json?
+  materialsJson Json?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  estimate     Estimate @relation(fields: [estimateId], references: [id])
+}
+
+model History {
+  id                   Int     @id @default(autoincrement())
+  jobId                String
+  activityCode         String
+  quantity             Float
+  laborHrsPerUnit      Float
+  equipHrsPerUnit      Float
+  matQtyPerUnit        Float
+  otherCosts           Float   @default(0)
+  performedAt          DateTime @default(now())
+}
