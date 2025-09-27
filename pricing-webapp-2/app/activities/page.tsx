@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/db";
 export const dynamic = "force-dynamic";
 
+type Activity = { code: string; name: string; unit: string };
+
 async function create(formData: FormData) {
   "use server";
   const code = String(formData.get("code")||"");
