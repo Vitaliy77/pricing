@@ -25,7 +25,14 @@ export default async function ActivitiesPage() {
       <table border={1} cellPadding={6}>
         <thead><tr><th>Code</th><th>Name</th><th>Unit</th></tr></thead>
         <tbody>
-          {items.map(a => (<tr key={a.id}><td>{a.code}</td><td>{a.name}</td><td>{a.unit}</td></tr>))}
+          {items.map((a: { id: string | number; code: string; name: string; unit: string }) => (
+  <tr key={a.id}>
+    <td>{a.code}</td>
+    <td>{a.name}</td>
+    <td>{a.unit}</td>
+  </tr>
+))}
+
         </tbody>
       </table>
     </div>
