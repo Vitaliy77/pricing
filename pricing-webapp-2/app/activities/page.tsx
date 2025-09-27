@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/db";
 import type { Activity } from "@prisma/client";
+import type { Activity as ActivityRow } from "@prisma/client";
+
 
 export const dynamic = "force-dynamic";
 
@@ -28,13 +30,14 @@ export default async function ActivitiesPage() {
       <table border={1} cellPadding={6}>
         <thead><tr><th>Code</th><th>Name</th><th>Unit</th></tr></thead>
         <tbody>
-          {items.map(a => (
+          {items.map((a: ActivityRow) => (
   <tr key={a.id}>
     <td>{a.code}</td>
     <td>{a.name}</td>
     <td>{a.unit}</td>
   </tr>
 ))}
+
 
 
         </tbody>
