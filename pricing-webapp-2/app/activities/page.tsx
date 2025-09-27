@@ -1,4 +1,6 @@
 import { prisma } from "@/lib/db";
+import type { Activity } from "@prisma/client";
+
 export const dynamic = "force-dynamic";
 
 type Activity = { code: string; name: string; unit: string };
@@ -8,6 +10,7 @@ async function create(formData: FormData) {
   const code = String(formData.get("code")||"");
   const name = String(formData.get("name")||"");
   const unit = String(formData.get("unit")||"");
+  const items: Activity[] = await prisma.activity.findMany({ orderBy: { code: "asc" } });
   await prisma.activity.create({ data: { code, name, unit }});
 }
 
@@ -25,13 +28,14 @@ export default async function ActivitiesPage() {
       <table border={1} cellPadding={6}>
         <thead><tr><th>Code</th><th>Name</th><th>Unit</th></tr></thead>
         <tbody>
-          {items.map((a: { id: string | number; code: string; name: string; unit: string }) => (
+          {items.map(a => (
   <tr key={a.id}>
     <td>{a.code}</td>
     <td>{a.name}</td>
     <td>{a.unit}</td>
   </tr>
 ))}
+
 
         </tbody>
       </table>
