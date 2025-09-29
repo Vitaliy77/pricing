@@ -29,11 +29,17 @@ export default async function EquipmentPage() {
       </form>
       <table border={1} cellPadding={6}>
         <thead><tr><th>Type</th><th>RateUnit</th><th>Rate</th><th>Fuel/hr</th><th>Maint/hr</th></tr></thead>
-        <tbody>
-          {items.map(e => (
-            <tr key={e.id}><td>{e.type}</td><td>{e.rateUnit}</td><td>{e.rate}</td><td>{e.fuelPerHour}</td><td>{e.maintPerHour}</td></tr>
-          ))}
-        </tbody>
+       <tbody>
+  {items.map((e: any) => (
+    <tr key={e.id}>
+      <td>{e.type}</td>
+      <td>{e.rateUnit}</td>
+      <td>{e.rate}</td>
+      <td>{e.fuelPerHour}</td>
+      <td>{e.maintPerHour}</td>
+    </tr>
+  ))}
+</tbody>
       </table>
     </div>
   )
