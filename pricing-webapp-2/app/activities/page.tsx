@@ -17,7 +17,12 @@ async function create(formData: FormData) {
 }
 
 export default async function ActivitiesPage() {
-  const items = await prisma.activity.findMany({ orderBy: { code: "asc" } });
+  const items = (await prisma.activity.findMany({ orderBy: { code: "asc" } })) as {
+  id: string | number;
+  code: string;
+  name: string;
+  unit: string;
+}[];
   return (
     <div>
       <h2>Activities</h2>
