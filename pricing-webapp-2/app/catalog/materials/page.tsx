@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 
 // Define interface for material data based on Prisma schema
 interface MaterialItem {
-  id: string; // Adjust to number if your schema uses numeric IDs
+  id: string; // UUID from Supabase
   sku: string;
   description: string;
   unit: string;
