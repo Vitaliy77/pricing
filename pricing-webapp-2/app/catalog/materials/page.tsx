@@ -1,5 +1,5 @@
 ```typescript
-import { prisma } from "@/lib/db";
+import { prisma } from "@/lib/db"; // Verify this path resolves to ./lib/db.ts
 
 // Define interface for material data based on Prisma schema
 interface MaterialItem {
