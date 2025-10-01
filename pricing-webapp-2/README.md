@@ -1,5 +1,7 @@
 # Construction Pricing — Starter (Next.js + Prisma + Postgres/Supabase)
 
+README.md: <!-- Force rebuild 2025-10-01 -->
+
 ## Setup
 1) `npm i`
 2) `cp .env.example .env` and set `DATABASE_URL`
